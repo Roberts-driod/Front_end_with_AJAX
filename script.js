@@ -1,9 +1,12 @@
 const loadPostsButton = document.getElementById('loadPosts');
 const postsContainer = document.getElementById('posts');
+const spinner = document.getElementById('spinner');
 
 loadPostsButton.addEventListener('click', loadPosts);
 
 function loadPosts() {
+
+    spinner.classList.remove('hidden');
 
     fetch('http://127.0.0.1:8000/api/posts')
         .then(response => response.json())
@@ -18,7 +21,7 @@ function loadPosts() {
 
                 postElement.innerHTML = `
                     <h2>${post.title}</h2>
-                    <p>${post.body}</p>
+                    <p>${post.content}</p>
 
                     <button onclick="loadComments(${post.id})">
                         Rādīt komentārus
@@ -31,7 +34,12 @@ function loadPosts() {
             });
         })
         .catch(error => {
+
             console.error('Kļūda:', error);
+
+        })
+        .finally(() => {
+            spinner.classList.add('hidden');
         });
 }
 
