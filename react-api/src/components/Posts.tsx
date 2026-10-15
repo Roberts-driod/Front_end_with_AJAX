@@ -1,9 +1,10 @@
 
 import { useState, useEffect } from 'react';
 import Comments from './Comments';
+import type { Post } from '../types/api';
 
 function Posts() {
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -21,21 +22,25 @@ function Posts() {
                     throw new Error('Neizdevās ielādēt postus.');
                 }
 
-                const data = await response.json();
+                const data: Post[] = await response.json();
                 setPosts(data);
-            } catch (error) {
-                setError(error.message);
+            } catch (error: unknown) {
+                setError(
+                    error instanceof Error
+                        ? error.message
+                        : 'Radās nezināma kļūda.'
+                );
             } finally {
                 setLoading(false);
             }
         }
 
-        loadPosts();
+        void loadPosts();
     }, []);
 
     return (
         <section className="posts">
-            {loading && <div className="spinner"></div>}
+            {loading && <div className="spinner" />}
 
             {error && <p className="error">{error}</p>}
 

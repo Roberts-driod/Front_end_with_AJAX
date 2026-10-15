@@ -1,8 +1,13 @@
 
 import { useState } from 'react';
+import type { Comment } from '../types/api';
 
-function Comments({ postId }) {
-    const [comments, setComments] = useState([]);
+interface CommentsProps {
+    postId: number;
+}
+
+function Comments({ postId }: CommentsProps) {
+    const [comments, setComments] = useState<Comment[]>([]);
     const [loading, setLoading] = useState(false);
     const [visible, setVisible] = useState(false);
     const [error, setError] = useState('');
@@ -20,10 +25,14 @@ function Comments({ postId }) {
                 throw new Error('Neizdevās ielādēt komentārus.');
             }
 
-            const data = await response.json();
+            const data: Comment[] = await response.json();
             setComments(data);
-        } catch (error) {
-            setError(error.message);
+        } catch (error: unknown) {
+            setError(
+                error instanceof Error
+                    ? error.message
+                    : 'Radās nezināma kļūda.'
+            );
         } finally {
             setLoading(false);
         }
@@ -37,7 +46,6 @@ function Comments({ postId }) {
 
         setVisible(true);
 
-        // Ielādējam komentārus tikai pirmajā atvēršanas reizē.
         if (comments.length === 0 && !error) {
             await loadComments();
         }
@@ -54,11 +62,9 @@ function Comments({ postId }) {
 
             {visible && (
                 <div className="comments">
-                    {loading && <div className="spinner"></div>}
+                    {loading && <div className="spinner" />}
 
-                    {error && (
-                        <p className="error">{error}</p>
-                    )}
+                    {error && <p className="error">{error}</p>}
 
                     {!loading && !error && comments.length === 0 && (
                         <p>Šim postam vēl nav komentāru.</p>
