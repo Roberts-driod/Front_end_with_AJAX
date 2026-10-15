@@ -75,3 +75,48 @@ body {
 .post h2 {
     margin-top: 0;
 }
+
+
+.comments-section {
+    margin-top: 20px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 15px;
+}
+
+.comments-button {
+    padding: 9px 14px;
+    border: none;
+    border-radius: 6px;
+    background: #374151;
+    color: white;
+    cursor: pointer;
+}
+
+.comments-button:hover {
+    background: #1f2937;
+}
+
+.comments {
+    margin-top: 15px;
+}
+
+.comment {
+    padding: 12px 15px;
+    margin-top: 10px;
+    background: #f3f4f6;
+    border-radius: 7px;
+}
+
+.comment strong {
+    font-size: 14px;
+    color: #374151;
+}
+
+.comment p {
+    margin-bottom: 0;
+    overflow-wrap: anywhere;
+}
+
+.error {
+    color: #dc2626;
+}
